@@ -1,4 +1,4 @@
-# TheBus
+# TheBus :oncoming_bus:
 A generic interface to talk to a service bus. (Queues, Topics, and Subscriptions) Taken from the public transportation all over Hawai'i.  [TheBus](http://www.thebus.org/), my primary mode of transportation growing up.
 
 ## Goal
@@ -15,8 +15,11 @@ Create a **simple** interface to talk to a service bus.
 
 ## Why wrap code?
 
-* Simple interface (hides complexity)
+* Simple interface (encapsulation - hides complexity)
 * Embed knowledge (defaults)
-* Common interface across multiple implemenations (Core, Framework)
+* Common interface across multiple implemenations (Core, Framework / Azure, AWS)
 * Decouple business logic from a framework
 * Less client code
+
+## :book: Reference :books:
+* [Emoji Cheat Sheet](https://www.webfx.com/tools/emoji-cheat-sheet/) :smile:
