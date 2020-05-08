@@ -8,7 +8,7 @@ Create a **simple** interface to talk to a service bus.
 
 ### Constraints
 
-* Use [Visual Studio Code](https://code.visualstudio.com/), mostly to get me out of my comfort zone (Visual Studio) and since this is a free library I want to make sure that it can be referenced through a free Integrated Development Environment (IDE).
+* Use [Visual Studio Code](https://code.visualstudio.com/), mostly to get me out of my comfort zone (Visual Studio) and since this is a free library I want to make sure that it can be referenced through a **free** Integrated Development Environment (IDE).
 
 * Share as much code as I can without it being **totally** unmaintainable. In a previous instance of this code I used a **ton** of `#ifdef`'s and it was just getting too unwieldly. I **really** had to know what file/project I was clicking on to see the active build code (.Net Core or Framework).  The source file was in the .Net Framework project and the .Net Core code contained links to the files in the Framework project.
 
@@ -23,13 +23,13 @@ Create a **simple** interface to talk to a service bus.
 * Simple interface (encapsulation - hides complexity)
 * Embed knowledge (defaults)
 * Common interface across multiple implemenations (Core, Framework / Azure, AWS)
-* Decouple business logic from a framework
+* Decouple business logic from a framework so changing implementations isn't as difficult
 * Less client code
 
 ## TODO
 
-* Fill in the implementation classes and possibly tweak the interface based on usage.
-* Add mocks for testing.
+* Fill in the implementation classes and possibly tweak the interface based on usage
+* Add mocks for testing
 * Add [Testing Extension](https://code.visualstudio.com/api/working-with-extensions/testing-extension)
 * Download and test on my Mac Book Pro. (*it should just run*)
 
@@ -37,9 +37,9 @@ Create a **simple** interface to talk to a service bus.
 
 The following are a list of VS Code Extensions that I use for this project as well as other projects.
 
-* **markdownlint** - Helps with standardizing your Markdown, but some of the standards are a little off in my opinion.
-
 * **C#** - A **MUST** have when writing .Net code.
+
+* **markdownlint** - Helps with standardizing your Markdown, but some of the standards are a little off in my opinion.
 
 ## :book: Reference :books:
 

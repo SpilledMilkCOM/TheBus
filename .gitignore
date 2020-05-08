@@ -348,3 +348,18 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+#######################################################################
+
+# Anything that is SECRET
+
+*.secret.*
+
+# Terraform stores ids, keys, etc. in this file.
+
+*.tfstate
+*.tfstate.*
+
+# Don't need to store any binaries
+
+*.exe
