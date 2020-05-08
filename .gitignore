@@ -360,6 +360,10 @@ MigrationBackup/
 *.tfstate
 *.tfstate.*
 
+# Terraform plug-in directory
+
+.terraform/
+
 # Don't need to store any binaries
 
 *.exe
