@@ -35,11 +35,7 @@ namespace SM.Messaging.AzureServiceBus
 		private bool _peekOnly = false;
 		private readonly SubscriptionClient _subscriptionClient;
 
-#if NETSTANDARD2_0
 		private ISerializationUtility _serializationUtility;
-#else
-		private bool _cleanupSubscription = false;
-#endif
 
 		/// <summary>
 		/// Once this object is constructed the resource will be created/verified and the client is set up to "listen" for the Topic
@@ -47,11 +43,7 @@ namespace SM.Messaging.AzureServiceBus
 		/// <param name="connectionString"></param>
 		/// <param name="topicName"></param>
 		/// <param name="subscriptionName"></param>
-#if NETSTANDARD2_0
 		public Subscription(string connectionString, string topicName, string subscriptionName, bool createIfNeeded, bool cleanupIfNeeded, bool peekOnly, ISerializationUtility serializationUtility)
-#else
-		public Subscription(string connectionString, string topicName, string subscriptionName, bool createIfNeeded, bool cleanupIfNeeded, bool peekOnly)
-#endif
 		{
 			ConnectionString = connectionString;
 			Name = subscriptionName;
@@ -71,14 +63,11 @@ namespace SM.Messaging.AzureServiceBus
 				Create(cleanupIfNeeded);
 			}
 
-#if NETSTANDARD2_0
 			_serializationUtility = serializationUtility;
 
 			//_subscriptionClient = new SubscriptionClient(new ServiceBusConnectionStringBuilder(ConnectionString), Name);
 			_subscriptionClient = new SubscriptionClient(ConnectionString, TopicName, Name);
-#else
-			_subscriptionClient = SubscriptionClient.CreateFromConnectionString(ConnectionString, TopicName, Name, ReceiveMode.PeekLock);
-#endif
+
 			RegisterCallback();
 
 			//ProcessMessages();
@@ -86,13 +75,9 @@ namespace SM.Messaging.AzureServiceBus
 
 		private void RegisterCallback()
 		{
-#if NETSTANDARD2_0
 			var options = new MessageHandlerOptions(MessageError) { AutoComplete = false, MaxConcurrentCalls = 1 };
 
 			_subscriptionClient.RegisterMessageHandler(OnMessageCallback, options);
-#else
-			_subscriptionClient.OnMessage(OnMessageCallback);
-#endif
 		}
 
 		/// <summary>
@@ -185,56 +170,12 @@ namespace SM.Messaging.AzureServiceBus
 
 		public IMessage WaitForMessage(int totalDelay)
 		{
-#if NETSTANDARD2_0
 			throw new NotSupportedException($"{nameof(WaitForMessage)} not supported in .Net Standard 2.0");
-#else
-			IMessage result = null;
-
-			// Always delay, because we are waiting for a callback.
-			// TODO: Possibly break out of this wait loop if the callback message is called.
-
-			while (totalDelay > 0)
-			{
-				// Look for the next message if one was not found.
-				var message = (result == null) ? _subscriptionClient.Peek() : null;
-
-				if (message == null)
-				{
-					Thread.Sleep(WaitDelay);
-					totalDelay -= WaitDelay;
-				}
-				else
-				{
-					result = new Message() { Payload = message.GetBody<TType>() };
-				}
-			}
-
-			return result;
-#endif
 		}
 
 		[ExcludeFromCodeCoverage]
 		public void WaitForProcessedMessage()
 		{
-#if !NETSTANDARD2_0
-			var baseMessage = _subscriptionClient.Peek();
-
-			while (baseMessage != null)
-			{
-				var message = _subscriptionClient.Peek();
-
-				// If the new message doesn't exist or a new message is encountered, then break out of the loop.
-
-				if (message == null || message.MessageId != baseMessage.MessageId)
-				{
-					baseMessage = null;
-				}
-				else
-				{
-					Thread.Sleep(WaitDelay);
-				}
-			}
-#endif
 		}
 
 		//----==== PRIVATE ====--------------------------------------------------------------------
@@ -245,39 +186,10 @@ namespace SM.Messaging.AzureServiceBus
 		private void Create(bool cleanupIfNeeded)
 		{
 			// Once this is created, it could be deleted at some point even if THIS object is still around.
-
-#if !NETSTANDARD2_0
-			var namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-
-			if (!namespaceManager.SubscriptionExists(TopicName, Name))
-			{
-				var descriptor = new SubscriptionDescription(TopicName, Name)
-				{
-					MaxDeliveryCount = 1,
-					AutoDeleteOnIdle = TimeSpan.FromMilliseconds(DeleteOnIdleTime),
-					DefaultMessageTimeToLive = TimeSpan.FromMilliseconds(MessageTimeToLive),
-					LockDuration = TimeSpan.FromMilliseconds(LockDuration)
-				};
-
-				namespaceManager.CreateSubscription(descriptor, new RuleDescription());
-
-				_cleanupSubscription = cleanupIfNeeded;
-			}
-#endif
 		}
 
 		private void Delete()
 		{
-#if !NETSTANDARD2_0
-			var namespaceManager = NamespaceManager.CreateFromConnectionString(ConnectionString);
-
-			if (_cleanupSubscription && namespaceManager.SubscriptionExists(TopicName, Name))
-			{
-				// Only delete the subscription if this class created it.
-
-				namespaceManager.DeleteSubscription(TopicName, Name);
-			}
-#endif
 		}
 
 		protected virtual void Dispose(bool disposing)
@@ -288,12 +200,10 @@ namespace SM.Messaging.AzureServiceBus
 				{
 					// TODO: dispose managed state (managed objects).
 
-#if NETSTANDARD2_0
 					if (!_subscriptionClient.IsClosedOrClosing)
 					{
 						_subscriptionClient.CloseAsync();
 					}
-#endif
 				}
 
 				// Free unmanaged resources (unmanaged objects) and override a finalizer below.
@@ -306,7 +216,6 @@ namespace SM.Messaging.AzureServiceBus
 			}
 		}
 
-#if NETSTANDARD2_0
 		/// <summary>
 		/// This message is registered on the subscription client and is called in a separate thread.
 		/// </summary>
@@ -359,34 +268,6 @@ namespace SM.Messaging.AzureServiceBus
 		{
 			return new Task(() => Console.WriteLine(arg.Exception.Message));
 		}
-#else
-		/// <summary>
-		/// The method called when a subscription is triggered.
-		/// </summary>
-		/// <param name="message"></param>
-
-		private void OnMessageCallback(BrokeredMessage brokeredMessage)
-		{
-			if (brokeredMessage != null)
-			{
-				IMessage message = new Message() { Payload = brokeredMessage.GetBody<TType>() };
-
-				// TODO: Investigate exceptions thrown here.
-				// TODO: Call based on IsAsynchronous
-
-				OnMessageCallback(message);
-
-				if (message.Success)
-				{
-					_subscriptionClient.Complete(brokeredMessage.LockToken);
-				}
-				else
-				{
-					_subscriptionClient.Abandon(brokeredMessage.LockToken);
-				}
-			}
-		}
-#endif
 
 		/// <summary>
 		/// Process the existing messages on the queue.
@@ -395,15 +276,6 @@ namespace SM.Messaging.AzureServiceBus
 		{
 			// There is NO PEEK in .NetStandard so there is NO way to get the existing messages.
 			// Those will stay on the queue.
-
-#if !NETSTANDARD2_0
-			while (_subscriptionClient.Peek() != null)
-			{
-				var message = _subscriptionClient.Receive();
-
-				OnMessageCallback(message);
-			}
-#endif
 		}
 	}
 }
