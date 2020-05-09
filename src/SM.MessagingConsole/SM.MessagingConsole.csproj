@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SM.Messaging.Interfaces\SM.Messaging.Interfaces.csproj" />
+    <ProjectReference Include="..\SM.Messaging.AzureServiceBus\SM.Messaging.AzureServiceBus.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

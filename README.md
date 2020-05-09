@@ -26,6 +26,18 @@ Create a **simple** interface to talk to a service bus.
 * Decouple business logic from a framework so changing implementations isn't as difficult
 * Less client code
 
+## `dotnet` Command Line Interface
+
+* `dotnet new` - Helps you create console apps, class libraries, etc.  This will scaffold a `.csproj` file.
+* `dotnet add` - Adds project or package reference(s) to an existing `.csproj` file.
+* `dotnet build`
+
+## Adding a GitHub NuGet Package Reference
+
+So you've built a package in GitHub and **now** you want to reference it.  You should be able use `dotnet add`. [Reference](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-add-package)
+
+        dotnet add package 
+
 ## TODO
 
 * Fill in the implementation classes and possibly tweak the interface based on usage

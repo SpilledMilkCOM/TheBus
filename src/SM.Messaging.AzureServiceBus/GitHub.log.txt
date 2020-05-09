@@ -1,0 +1,78 @@
+PS C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus> dotnet add package SM.Serialization -s https://github.com/SpilledMilkCOM/SM.Serialization
+  Writing C:\Users\Parker\AppData\Local\Temp\tmp1DDA.tmp
+info : Adding PackageReference for package 'SM.Serialization' into project 'C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus\SM.Messaging.AzureServiceBus.csproj
+'.
+info : Restoring packages for C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus\SM.Messaging.AzureServiceBus.csproj...
+info :   GET https://api.nuget.org/v3-flatcontainer/sm.serialization/index.json
+info :   GET https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0
+info :   NotFound https://api.nuget.org/v3-flatcontainer/sm.serialization/index.json 631ms
+info :   NotFound https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0 568ms
+log  : Retrying 'FindPackagesByIdAsyncCore' for source 'https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0'.
+log  : Response status code does not indicate success: 404 (Not Found).
+info :   GET https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0
+info :   NotFound https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0 90ms
+log  : Retrying 'FindPackagesByIdAsyncCore' for source 'https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0'.
+log  : Response status code does not indicate success: 404 (Not Found).
+info :   GET https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0
+info :   NotFound https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0 91ms
+error: Failed to retrieve information about 'SM.Serialization' from remote source 'https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVe
+rLevel=2.0.0'.
+error:   Response status code does not indicate success: 404 (Not Found).
+
+
+Usage: NuGet.CommandLine.XPlat.dll package add [options]
+
+Options:
+  -h|--help               Show help information
+  --force-english-output  Forces the application to run using an invariant, English-based culture.
+  --package               Id of the package to be added.
+  --version               Version of the package to be added.
+  -d|--dg-file            Path to the dependency graph file to be used to restore preview and compatibility check.
+  -p|--project            Path to the project file.
+  -f|--framework          Frameworks for which the package reference should be added.
+  -n|--no-restore         Do not perform restore preview and compatibility check. The added package reference will be unconditional.
+  -s|--source             Specifies NuGet package sources to use during the restore.
+  --package-directory     Directory to restore packages in.
+  --interactive           Allow the command to block and require manual action for operations like authentication.
+PS C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus>
+
+
+Project File:
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\SM.Messaging.Interfaces\SM.Messaging.Interfaces.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SM.Serialization" Version="1.0.0" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <RestoreSources>$(RestoreSources);https://github.com/SpilledMilkCOM/SM.Serialization</RestoreSources>
+
+    <RepositoryUrl>https://github.com/SpilledMilkCOM/SM.Serialization</RepositoryUrl>
+  </PropertyGroup>
+
+</Project>
+
+
+PS C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus> dotnet restore
+  Restore completed in 41.78 ms for C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.Interfaces\SM.Messaging.Interfaces.csproj.
+  Retrying 'FindPackagesByIdAsyncCore' for source 'https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0'.
+  Response status code does not indicate success: 404 (Not Found).
+  Retrying 'FindPackagesByIdAsyncCore' for source 'https://github.com/SpilledMilkCOM/SM.Serialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0'.
+  Response status code does not indicate success: 404 (Not Found).
+C:\Program Files\dotnet\sdk\3.1.201\NuGet.targets(124,5): error : Failed to retrieve information about 'SM.Serialization' from remote source 'https://github.com/SpilledMilkCOM/SM.S
+erialization/FindPackagesById()?id='SM.Serialization'&semVerLevel=2.0.0'. [C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus\SM.Messaging.AzureServiceBus.csproj]
+
+C:\Program Files\dotnet\sdk\3.1.201\NuGet.targets(124,5): error :   Response status code does not indicate success: 404 (Not Found). [C:\Users\Parker\Source\Repos\TheBus\src\SM.Mes
+saging.AzureServiceBus\SM.Messaging.AzureServiceBus.csproj]
+PS C:\Users\Parker\Source\Repos\TheBus\src\SM.Messaging.AzureServiceBus>
