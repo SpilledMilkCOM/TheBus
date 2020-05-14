@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.Management.ServiceBus;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using SM.Messaging.AzureServiceBus.Configuration;
 using SM.Messaging.Interfaces;
 using SM.Serialization;
 using System;
