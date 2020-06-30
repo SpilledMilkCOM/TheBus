@@ -36,7 +36,15 @@ Create a **simple** interface to talk to a service bus.
 
 So you've built a package in GitHub and **now** you want to reference it.  You should be able use `dotnet add`. [Reference](https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-add-package)
 
-        dotnet add package 
+        dotnet add package
+
+You may not be able to `add` the package due to the GitHub credentials, but once you add those credentials the `restore` will work.
+Jamie @ GitHub support says that PAT's will be stripped from any `nuget.config` file, but you can XML encode them so they stick.
+I would suggest putting any credentials in your global `nuget.config` file typically found in the your Nuget's home directory
+*(~/AppData/Roaming/NuGet/NuGet.config)*.
+
+        dotnet tool update gpr -g
+        gpr xmlEncode <YOUR_READ_PACKAGES_TOKEN>
 
 ## TODO
 
