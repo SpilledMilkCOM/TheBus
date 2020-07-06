@@ -74,6 +74,17 @@ Either I like it or I don't like it.  A measurment of dependencies.  Differenct 
 
 ## Architecural styles: Bus and Broker
 
+### Broker
+
+* Hub & Spoke (vs point to point integration)
+* Broker is physically separate
+* Single point of failure
+* SOA was the response to the failings of Broker (BizTalk, etc.)
+
+### Bus
+
+* Event sources / Event sinks (producers & consumers)
+
 ## Intro to SOA
 
 ## Exercise: services modelling
